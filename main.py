@@ -35,7 +35,7 @@ e = {
     'train': {
         'datasets': {
             'ukdale': {
-                'path': './mnt/ukdale.h5',
+                'path': './data/ukdale.h5',
                 'buildings': {
                     2: {
                         'start_time': '2013-07-01',
@@ -52,7 +52,7 @@ e = {
     'test': {
         'datasets': {
             'ukdale': {
-                'path': './mnt/ukdale.h5',
+                'path': './data/ukdale.h5',
                 'buildings': {
                     2: {
                         'start_time': '2013-07-08',
