@@ -14,10 +14,11 @@ Codes for the Transferable NILM will be prioritized for public release, followed
 | Sequence length                                   | 699                               |
 | Number of attention heads                         | 8                                 |
 | Random Seed                                       | 2000                              |
-| Loss Function                                     | $\mathcal{L}_2\text{Loss}(\cdot)$ |
+| Loss function                                     | $\mathcal{L}_2\text{Loss}(\cdot)$ |
 | Dropout probability                               | 0.1                               |
 | Gaussian noise                                    | $\mu =0,\sigma =0.1$              |
 | Optimizer                                         | Adam                              |
+| Initialization function                           | Standard                          |
 
 ## Data Preparation
 
@@ -41,7 +42,7 @@ Specifically, 1) *Case 1: Intradomain transfer.* The U.K.-DALE with its extensiv
 
 ### Requirements
 
-All neural networks are implemented using PyTorch==2.1 versions as the underlying module and trained on a single NVIDIA RTX 4090 GPU with 24 GB RAM.
+All neural networks are implemented using PyTorch==2.1.1+cuda121 versions as the underlying module and trained on a single NVIDIA RTX 4090 GPU with 24 GB RAM.
 
 Please code as below to install some necessary libraries.
 
