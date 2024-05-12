@@ -42,7 +42,7 @@ Specifically, 1) *Case 1: Intradomain transfer.* The U.K.-DALE with its extensiv
 
 ### Requirements
 
-All neural networks are implemented using PyTorch==2.1 versions as the underlying module and trained on a single NVIDIA RTX 4090 GPU with 24 GB RAM.
+All neural networks are implemented using PyTorch==2.1.1+cuda121 versions as the underlying module and trained on a single NVIDIA RTX 4090 GPU with 24 GB RAM.
 
 Please code as below to install some necessary libraries.
 
