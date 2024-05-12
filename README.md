@@ -14,10 +14,11 @@ Codes for the Transferable NILM will be prioritized for public release, followed
 | Sequence length                                   | 699                               |
 | Number of attention heads                         | 8                                 |
 | Random Seed                                       | 2000                              |
-| Loss Function                                     | $\mathcal{L}_2\text{Loss}(\cdot)$ |
+| Loss function                                     | $\mathcal{L}_2\text{Loss}(\cdot)$ |
 | Dropout probability                               | 0.1                               |
 | Gaussian noise                                    | $\mu =0,\sigma =0.1$              |
 | Optimizer                                         | Adam                              |
+| Initialization function                           | Standard                          |
 
 ## Data Preparation
 
