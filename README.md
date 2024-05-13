@@ -57,3 +57,10 @@ To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/)
 bash NILM_uk.sh
 ```
 
+- **References**
+
+  [1] https://github.com/nilmtk/nilmtk
+
+  [2] KELLY J, KNOTTENBELT W. Neural NILM: Deep neural networks applied to energy disaggregation[C]//The 2nd ACM International Conference on Embedded Systems for Energy-Efficient Built Environments. November 4-5, 2015, Seoul, South Korea: 55-64.
+
+  [3] https://github.com/Ming-er/NeuralNILM_Pytorch
