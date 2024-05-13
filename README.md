@@ -65,12 +65,8 @@ bash NILM_uk.sh
   
   ```
   ├── README.md							                   
-  ├── environment.yml						//Environment dependencies
   ├── nilm_metadata          				
   │   └── *								//Some details are omitted
-  ├── tutorial                     
-  │   ├── experiment_example.ipynb     	//How to carry out your own NILM experiment
-  │   ├── code_example.ipynb			    //How to write your own algorithms or metrics
   ├── nilmtk                     
   │   ├── api.py							//The core api to carry out NILM experiment
   │   ├── loss.py							//The evaluation Metrics
