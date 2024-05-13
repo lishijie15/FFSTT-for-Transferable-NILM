@@ -61,6 +61,6 @@ bash NILM_uk.sh
 
   [1] https://github.com/nilmtk/nilmtk
 
-  [2] KELLY J, KNOTTENBELT W. Neural NILM: Deep neural networks applied to energy disaggregation[C]//The 2nd ACM International Conference on Embedded Systems for Energy-Efficient Built Environments. November 4-5, 2015, Seoul, South Korea: 55-64.
+  [2] KELLY J, KNOTTENBELT W. Neural NILM: Deep neural networks applied to energy disaggregation. In Proceedings of the 2nd ACM International Conference on Embedded Systems for Energy-Efficient Built Environments. November 4-5, 2015, New York, NY, USA, 55–64.
 
   [3] https://github.com/Ming-er/NeuralNILM_Pytorch
