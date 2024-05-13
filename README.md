@@ -57,30 +57,12 @@ To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/)
 bash NILM_uk.sh
 ```
 
-- **File Directory**
+**File Directory**
 
-  Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py`, `\nilmtk\disaggregate`, `\tutorial\experiment_example.ipynb` and  `\tutorial\code_example.ipynb`
+Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py` and `\nilmtk\disaggregate`
   
-  The whole file directory is as follow (We omit some unimportant details)：
-  
-  ```
-  ├── README.md							                   
-  ├── nilm_metadata          				
-  │   └── *								//Some details are omitted
-  ├── nilmtk                     
-  │   ├── api.py							//The core api to carry out NILM experiment
-  │   ├── loss.py							//The evaluation Metrics
-  │   ├── diaggregate
-  |   |	├── __init__.py
-  |   |	├── bilstm_pytorch.py			   //BiLSTM
-  |   |	├── energan_pytorch.py			   //EnerGAN
-  |   |	├── seq2point_pytorch.py		   //Seq2Point
-  |   |	├── FFSTT_pytorch.py		   //FFSTT
-  |   |	├── TimesNet_pytorch.py		   //TimesNet
-  │   └── *								   //Some details are omitted
-  ```
 
-- **References**
+**References**
 
   [1] https://github.com/nilmtk/nilmtk.
 
