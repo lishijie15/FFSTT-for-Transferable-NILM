@@ -87,26 +87,5 @@ And several NILM algorithms with '_**multidim**' suffix, such as bilstm_pytorch_
 ------
 - **References**
 
-  [1] https://pytorch.org/
 
-  [2] https://github.com/nilmtk/nilmtk
 
-  [3] KELLY J, KNOTTENBELT W. Neural NILM: Deep neural networks applied to energy disaggregation[C]//The 2nd ACM International Conference on Embedded Systems for Energy-Efficient Built Environments. November 4-5, 2015, Seoul, South Korea: 55-64.
-
-  [4] ZHANG C, ZHONG M, WANG Z, et al. Sequence-to-point learning with neural networks for non-intrusive load monitoring[C]//The 32nd AAAI Conference on Artificial Intelligence. February 2–7, 2018, Louisiana, USA: 2604–2611.
-
-  [5] WANG Ke, ZHONG Haiwang, YU Nanpeng, et al. Nonintrusive Load Monitoring based on Sequence-to-sequence Model With Attention Mechanism[J]. Proceedings of the CSEE,2019,39(1):75-83.
-
-  [6] SHIN C, JOO S, YIM J. Subtask Gated Networks for Non-Intrusive Load Monitoring[J]. Proceedings of the AAAI Conference on Artificial Intelligence, 2019, 33(1): 1150–1157.
-
-  [7] KASELIMI M, VOULODIMOS A, PROTOPAPADAKIS E, et al. EnerGAN: A GENERATIVE ADVERSARIAL NETWORK FOR ENERGY DISAGGREGATION[C/OL]//ICASSP 2020 - 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP). Barcelona, Spain: IEEE, 2020: 1578–1582.
-
-  [8] XU Xiaohui, ZHAO Shutao, CUI Kebin. Non-intrusive Load Disaggregate Algorithm Based on Convolutional Block Attention Module[J/0L]. Power System Technology, 2021: 1-8.
-
-  [9] ISOLA P, ZHU JY, ZHOU T, et al. Image-to-Image Translation with Conditional Adversarial Networks[C/OL]//2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR). Honolulu, HI: IEEE, 2017: 5967–5976.
-
-  ------
-
-- **Future Work To Do** 
-
-  Override some of the functions which are repeated in the current framework with sealed APIs.
