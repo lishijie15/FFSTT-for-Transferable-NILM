@@ -50,7 +50,7 @@ Please code as below to install some necessary libraries.
 pip install -r requirements.txt
 ```
 
-### Run Our Model
+### Getting started
 To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. Then, execute the following code.
 
 ```
