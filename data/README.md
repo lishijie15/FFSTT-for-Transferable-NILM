@@ -85,7 +85,4 @@ And several NILM algorithms with '_**multidim**' suffix, such as bilstm_pytorch_
   - Refer to  `\tutorial\code_example.ipynb` to know how to **write your own energy disaggregation algorithms** or **evaluation metrics**.
 
 ------
-- **References**
-
-
 
