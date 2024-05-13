@@ -51,8 +51,8 @@ pip install -r requirements.txt
 ```
 
 ### Run Our Model
-
-To perform the Transferable NILM, please execute the following code.
+To execute FFSTT, first download the UK-DALE and \href{http://redd.csail.mit.edu/}{REDD} datasets and place them in the root directory folder ./data/. Then, execute the following code.
+To perform the FFSTT, please execute the following code.
 
 ```
 bash NILM_uk.sh
