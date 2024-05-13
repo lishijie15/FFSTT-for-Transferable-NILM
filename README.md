@@ -42,7 +42,7 @@ Specifically, 1) *Case 1: Intradomain transfer.* The U.K.-DALE with its extensiv
 
 ### Requirements
 
-All neural networks are implemented using PyTorch==2.1.1+cuda121 versions as the underlying module and trained on a single NVIDIA RTX 4090 GPU with 24 GB RAM.
+All neural networks are implemented using `PyTorch==2.1.1+cuda121` versions as the underlying module and trained on a single NVIDIA RTX 4090 GPU with 24 GB RAM.
 
 Please code as below to install some necessary libraries.
 
@@ -51,10 +51,46 @@ pip install -r requirements.txt
 ```
 
 ### Run Our Model
-
-To perform the Transferable NILM, please execute the following code.
+To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. Then, execute the following code.
 
 ```
 bash NILM_uk.sh
 ```
 
+- **File Directory**
+
+  Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py`, `\nilmtk\disaggregate`, `\tutorial\experiment_example.ipynb` and  `\tutorial\code_example.ipynb`
+  
+  The whole file directory is as follow (We omit some unimportant details)：
+  
+  ```
+  ├── README.md							                   
+  ├── nilm_metadata          				
+  │   └── *								//Some details are omitted
+  ├── nilmtk                     
+  │   ├── api.py							//The core api to carry out NILM experiment
+  │   ├── loss.py							//The evaluation Metrics
+  │   ├── diaggregate
+  |   |	├── __init__.py
+  |   |	├── attention_pytorch.py		   //Seq2Seq with Attention
+  |   |	├── bilstm_pytorch.py			   //BiLSTM
+  |   |	├── dae_pytorch.py				   //Denoising AutoEncoder
+  |   |	├── disaggregator.py			   //Base Class
+  |   |	├── energan_pytorch.py			   //EnerGAN
+  |   |	├── seq2point_pytorch.py		   //Seq2Point
+  |   |   ├── attention_cnn_pytorch.py       //CNN_Attention
+  |   |   ├── seq2seqcnn_pytorch.py          //CNN_Seq2Seq
+  |   |   ├── bilstm_pytorch_multidim.py     //Multiple input features BiLSTM
+  |   |   ├── dae_pytorch_multidim.py        //Multiple input features DAE
+  |   |   ├── seq2point_pytorch_multidim.py  //Multiple input features Seq2Point
+  |   |	└── sgn_pytorch.py				   //SGN
+  │   └── *								   //Some details are omitted
+  ```
+
+- **References**
+
+  [1] https://github.com/nilmtk/nilmtk.
+
+  [2] KELLY J, KNOTTENBELT W. Neural NILM: Deep neural networks applied to energy disaggregation. In Proceedings of the 2nd ACM International Conference on Embedded Systems for Energy-Efficient Built Environments. November 4-5, 2015, New York, NY, USA, 55–64.
+
+  [3] https://github.com/Ming-er/NeuralNILM_Pytorch.
