@@ -72,18 +72,11 @@ bash NILM_uk.sh
   │   ├── loss.py							//The evaluation Metrics
   │   ├── diaggregate
   |   |	├── __init__.py
-  |   |	├── attention_pytorch.py		   //Seq2Seq with Attention
   |   |	├── bilstm_pytorch.py			   //BiLSTM
-  |   |	├── dae_pytorch.py				   //Denoising AutoEncoder
-  |   |	├── disaggregator.py			   //Base Class
   |   |	├── energan_pytorch.py			   //EnerGAN
   |   |	├── seq2point_pytorch.py		   //Seq2Point
-  |   |   ├── attention_cnn_pytorch.py       //CNN_Attention
-  |   |   ├── seq2seqcnn_pytorch.py          //CNN_Seq2Seq
-  |   |   ├── bilstm_pytorch_multidim.py     //Multiple input features BiLSTM
-  |   |   ├── dae_pytorch_multidim.py        //Multiple input features DAE
-  |   |   ├── seq2point_pytorch_multidim.py  //Multiple input features Seq2Point
-  |   |	└── sgn_pytorch.py				   //SGN
+  |   |	├── FFSTT_pytorch.py		   //FFSTT
+  |   |	├── TimesNet_pytorch.py		   //TimesNet
   │   └── *								   //Some details are omitted
   ```
 
