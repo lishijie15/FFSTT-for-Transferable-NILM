@@ -50,42 +50,22 @@ Please code as below to install some necessary libraries.
 pip install -r requirements.txt
 ```
 
-### Run Our Model
-To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. Then, execute the following code.
+### Getting started
+To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. If you only have a single GPU, you can directly execute the following code:
+
+```
+python main.py
+```
+
+If you are using multiple GPU servers, you can set the GPU index by executing the following code:
 
 ```
 bash NILM_uk.sh
 ```
 
-- **File Directory**
+**File Directory**
 
-  Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py`, `\nilmtk\disaggregate`, `\tutorial\experiment_example.ipynb` and  `\tutorial\code_example.ipynb`
-  
-  The whole file directory is as follow (We omit some unimportant details)：
-  
-  ```
-  ├── README.md							                   
-  ├── nilm_metadata          				
-  │   └── *								//Some details are omitted
-  ├── nilmtk                     
-  │   ├── api.py							//The core api to carry out NILM experiment
-  │   ├── loss.py							//The evaluation Metrics
-  │   ├── diaggregate
-  |   |	├── __init__.py
-  |   |	├── attention_pytorch.py		   //Seq2Seq with Attention
-  |   |	├── bilstm_pytorch.py			   //BiLSTM
-  |   |	├── dae_pytorch.py				   //Denoising AutoEncoder
-  |   |	├── disaggregator.py			   //Base Class
-  |   |	├── energan_pytorch.py			   //EnerGAN
-  |   |	├── seq2point_pytorch.py		   //Seq2Point
-  |   |   ├── attention_cnn_pytorch.py       //CNN_Attention
-  |   |   ├── seq2seqcnn_pytorch.py          //CNN_Seq2Seq
-  |   |   ├── bilstm_pytorch_multidim.py     //Multiple input features BiLSTM
-  |   |   ├── dae_pytorch_multidim.py        //Multiple input features DAE
-  |   |   ├── seq2point_pytorch_multidim.py  //Multiple input features Seq2Point
-  |   |	└── sgn_pytorch.py				   //SGN
-  │   └── *								   //Some details are omitted
-  ```
+Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py` and `\nilmtk\disaggregate`
 
 - **References**
 
