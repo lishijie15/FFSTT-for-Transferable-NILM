@@ -48,18 +48,6 @@ In this paper, three cases are designed and compared for both intra- and interdo
 
 2) *Case 2: Interdomain transfer.* To analyze adaptability in interdomain transfer, we adopt the notation $i$ and $j/y$ to represent the IDs of the source house (with 100% labeled data) and the target house (with 25% labeled data), respectively. Specifically, our evaluation encompasses four interdomain tasks: $U_i$ → $R_j$, $U_i$ → $R_y$, $R_i$ → $U_j$, and $R_i$ → $U_y$, to comprehensively assess all methods. When U.K.-DALE serves as the source domain, we set $i=2$, and $j=1/3$. Similarly, when REDD serves as the source domain, we assign $i=1$, with $j$ being either $1$ or $2$. As illustrated in Table I, the proposed model not only demonstrates superior performance on most appliances but also significantly exhibits improvement compared to the non-pretrained approach across all appliances.
 
-## Usage
-
-### Requirements
-
-All neural networks are implemented using `PyTorch==2.1.1+cuda121` versions as the underlying module and trained on a single NVIDIA RTX 4090 GPU with 24 GB RAM.
-
-Please code as below to install some necessary libraries.
-
-```
-pip install -r requirements.txt
-```
-
 ### Getting started
 To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. If you only have a single GPU, you can directly execute the following code:
 
