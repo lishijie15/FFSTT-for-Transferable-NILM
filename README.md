@@ -1,5 +1,5 @@
 # FFSTT for Transferable NILM
-Neural NILM is used as a platform for comparing multiple disaggregation approaches. The detailed hyper-parameters of FFSTT is summarized in the Anonymous GitHub. The detailed hyper-parameters of FFSTT is summarized in the following table . The setting of the $D$, $D_{\text{ff}}$ and the number of attention heads takes into account the computational performance of the GPU, as well as the complexity of the datasets and its optimal feature representation. The learning rate of the Adam optimizer and batch size are initially set to empirical values, followed by multiple result-driven simulations to obtain the optimal values.
+Neural NILM is used as a platform for comparing multiple disaggregation approaches. The setting of the $D$, $D_{\text{ff}}$ and the number of attention heads takes into account the computational performance of the GPU, as well as the complexity of the datasets and its optimal feature representation. The learning rate of the Adam optimizer and batch size are initially set to empirical values, followed by multiple result-driven simulations to obtain the optimal values.
 Codes for the Transferable NILM will be prioritized for public release, followed by a gradual disclosure of the complete codebase.
 
 The hyper-parameter settings for FFSTT are as follows:
@@ -11,7 +11,7 @@ The hyper-parameter settings for FFSTT are as follows:
 | Number of epochs                                  | 100                               |
 | Dimension of embedding ($D$)                      | 64                                |
 | Dimension of feed-forward layer ($D_{\text{ff}}$) | 64                                |
-| Sequence length                                   | 799 (W.M), 699 (FG)               |
+| Sequence length                                   | 799 (W.M), 699 (FG, D.W, KT), 129 (MV) |
 | Number of attention heads                         | 8                                 |
 | Random Seed                                       | 2000                              |
 | Loss function                                     | $\mathcal{L}_2\text{Loss}(\cdot)$ |
