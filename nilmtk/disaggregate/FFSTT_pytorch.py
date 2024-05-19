@@ -38,7 +38,7 @@ class FFSTT_Pytorch(nn.Module):
         super(FFSTT_Pytorch, self).__init__()
         self.seq_len = sequence_length
         self.horizon = 1
-        enc_in = 125 + 4 #加上了mark的
+        enc_in = 125 + 4 
         self.output_attention = 'store_true'
         # Embedding
         self.enc_embedding = DataEmbedding_classficaiton(self.horizon, 64, 'fixed', 'h', 0.1)
@@ -58,7 +58,8 @@ class FFSTT_Pytorch(nn.Module):
         # Decoder
         self.act = F.gelu
         self.dropout = nn.Dropout(0.1)
-        self.projection = nn.Linear(sequence_length * 64, 1)  # num_class是类别数量
+        self.projection = nn.Linear(sequence_length * 64, 1)  
+        # self.projection = lora.Linear(sequence_length * 64, 1, r=16)
 
     def classification(self, x_enc):
         # Embedding
@@ -198,121 +199,28 @@ def test(model, test_mains, batch_size = 512):
     print("Inference Time consumption: {}s.".format(ed - st))
     return res.numpy()
 
-def transfer(appliance_name, model, mains, appliance, epochs, batch_size, train_patience = 3):
-    # Model configuration
-    if USE_CUDA:
-        model = model.cuda()
-
-        pretrained_dict = torch.load(os.path.join("./" + appliance_name + "_FFSTT_best_state_uk.pt"))
-    # pretrained_dict = pretrained_dict['model_state_dict']
-
-    print("Load Model Parameters.")
-    # 获取当前模型的状态字典
-    model_dict = model.state_dict()
-
-    # 过滤出预训练字典中与模型字典形状相同的部分
-    pretrained_dict = {k: v for k, v in pretrained_dict.items() if
-                       k in model_dict and model_dict[k].size() == v.size()}
-
-    # 更新当前模型的状态字典
-    model_dict.update(pretrained_dict)
-
-    # 加载匹配的权重
-    model.load_state_dict(model_dict, strict=False)
-
-
-    summary(model, (1, mains.shape[1]))
-
-    # Split the train and validation set
-    train_mains, valid_mains, train_appliance, valid_appliance = train_test_split(mains, appliance, test_size=0.2, random_state=random_seed)
-
-    # Create optimizer, loss function, and dataloader
-    optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=0.0001)
-    loss_fn = torch.nn.MSELoss(reduction='mean')
-
-    train_dataset = TensorDataset(torch.from_numpy(train_mains).float().permute(0, 2, 1), torch.from_numpy(train_appliance).float())
-    train_loader = tud.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0, drop_last=True)
-
-    valid_dataset = TensorDataset(torch.from_numpy(valid_mains).float().permute(0, 2, 1), torch.from_numpy(valid_appliance).float())
-    valid_loader = tud.DataLoader(valid_dataset, batch_size=batch_size, shuffle=True, num_workers=0, drop_last=True)
-
-    # Freeze the layers if required
-    # Assume that we are only training the last layers named 'projection'
-    # for param in model.parameters():
-    #     param.requires_grad = False
-    # for param in model.projection.parameters():
-    #     param.requires_grad = True
-
-    writer = SummaryWriter(comment='transfer_learning_visual')
-    # patience, best_loss = 0, None
-
-    # for epoch in range(epochs):
-    #     # Early stopping
-    #     if patience == train_patience:
-    #         print("Validation loss did not improve after {} epochs, stopping early.".format(train_patience))
-    #         break
-    #
-    #     st = time.time()
-    #     # Training loop
-    #     for i, (batch_mains, batch_appliance) in enumerate(train_loader):
-    #         if USE_CUDA:
-    #             batch_mains = batch_mains.cuda()
-    #             batch_appliance = batch_appliance.cuda()
-
-        #     batch_pred = model(batch_mains)
-        #     loss = loss_fn(batch_pred, batch_appliance)
-        #
-        #     model.zero_grad()
-        #     loss.backward()
-        #     optimizer.step()
-        # ed = time.time()
-
-    # Evaluate the model
-    model.eval()
-    with torch.no_grad():
-        cnt, loss_sum = 0, 0
-        for i, (batch_mains, batch_appliance) in enumerate(valid_loader):
-            if USE_CUDA:
-                batch_mains = batch_mains.cuda()
-                batch_appliance = batch_appliance.cuda()
-
-            batch_pred = model(batch_mains)
-            loss = loss_fn(batch_appliance, batch_pred)
-            loss_sum += loss
-            cnt += 1
-
-    final_loss = loss_sum / cnt
-
-
-    writer.add_scalar('Loss/Validation', final_loss)
-
-    writer.close()
-    return model
 
 def transfer_fine(appliance_name, model, mains, appliance, epochs, batch_size, train_patience = 3):
     # Model configuration
     if USE_CUDA:
         model = model.cuda()
 
-        pretrained_dict = torch.load(os.path.join("./" + appliance_name + "_FFSTT_best_state_uk.pt"))
+        pretrained_dict = torch.load(os.path.join("./" + appliance_name + "_FFSTT_best_state_REDD.pt"))
     # pretrained_dict = pretrained_dict['model_state_dict']
 
     print("Load Model Parameters and fine tuning.")
-    # 获取当前模型的状态字典
     model_dict = model.state_dict()
 
-    # 过滤出预训练字典中与模型字典形状相同的部分
     pretrained_dict = {k: v for k, v in pretrained_dict.items() if
                        k in model_dict and model_dict[k].size() == v.size()}
 
-    # 更新当前模型的状态字典
     model_dict.update(pretrained_dict)
 
-    # 加载匹配的权重
+
     model.load_state_dict(model_dict, strict=False)
 
     # train lora only
-    # lora.mark_only_lora_as_trainable(model, bias='all')
+    lora.mark_only_lora_as_trainable(model, bias='all')
 
     summary(model, (1, mains.shape[1]))
 
@@ -454,18 +362,7 @@ class FFSTT(Disaggregator):
             for appliance in self.models:
                 # Move the model to cpu, and then test it
                 model = self.models[appliance].to('cpu')
-                # pretrained_dict = torch.load(os.path.join("./" + appliance + "_FFSTT_best_state.pt"))
-                # # pretrained_dict = pretrained_dict['model_state_dict']
-                # print("Load Model Parameters.")
-                # # 获取当前模型的状态字典
-                # model_dict = model.state_dict()
-                # # 过滤出预训练字典中与模型字典形状相同的部分
-                # pretrained_dict = {k: v for k, v in pretrained_dict.items() if
-                #                    k in model_dict and model_dict[k].size() == v.size()}
-                # # 更新当前模型的状态字典
-                # model_dict.update(pretrained_dict)
-                # # 加载匹配的权重
-                # model.load_state_dict(model_dict, strict=False)
+               
                 prediction = test(model, test_main)
                 prediction = self.appliance_params[appliance]['mean'] + prediction * self.appliance_params[appliance][
                     'std']

@@ -313,15 +313,15 @@ class class_Encoder(nn.Module):
         d_ff = d_ff or 4 * d_model
         d_modelup = make_dmodel(seq_len)
         self.attention = attention
-        self.conv1 = nn.Conv1d(in_channels=d_model, out_channels=d_ff, kernel_size=1)
-        self.conv2 = nn.Conv1d(in_channels=d_ff, out_channels=d_model, kernel_size=1)
-        # self.conv1 = lora.Conv1d(in_channels=d_model, out_channels=d_ff, kernel_size=1, r=4)
-        # self.conv2 = lora.Conv1d(in_channels=d_ff, out_channels=d_model, kernel_size=1, r=4)
+        # self.conv1 = nn.Conv1d(in_channels=d_model, out_channels=d_ff, kernel_size=1)
+        # self.conv2 = nn.Conv1d(in_channels=d_ff, out_channels=d_model, kernel_size=1)
+        self.conv1 = lora.Conv1d(in_channels=d_model, out_channels=d_ff, kernel_size=1, r=4)
+        self.conv2 = lora.Conv1d(in_channels=d_ff, out_channels=d_model, kernel_size=1, r=4)
         self.cell = Block(dim=d_model, d_modelup=d_modelup, mlp_ratio=0.4)
-        self.proj = nn.Linear(seq_len, d_modelup)
-        self.proj_b = nn.Linear(d_modelup, seq_len)
-        # self.proj = lora.Linear(seq_len, d_modelup, r=16)  #405, 416
-        # self.proj_b = lora.Linear(d_modelup, seq_len, r=16)  #416, 405
+        # self.proj = nn.Linear(seq_len, d_modelup)
+        # self.proj_b = nn.Linear(d_modelup, seq_len)
+        self.proj = lora.Linear(seq_len, d_modelup, r=16)  #405, 416
+        self.proj_b = lora.Linear(d_modelup, seq_len, r=16)  #416, 405
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
