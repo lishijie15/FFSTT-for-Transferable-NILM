@@ -2,7 +2,7 @@
 Neural NILM is used as a platform for comparing multiple disaggregation approaches. The detailed hyper-parameters of FFSTT is summarized in the Anonymous GitHub. The detailed hyper-parameters of FFSTT is summarized in the following table . The setting of the $D$, $D_{\text{ff}}$ and the number of attention heads takes into account the computational performance of the GPU, as well as the complexity of the datasets and its optimal feature representation. The learning rate of the Adam optimizer and batch size are initially set to empirical values, followed by multiple result-driven simulations to obtain the optimal values.
 Codes for the Transferable NILM will be prioritized for public release, followed by a gradual disclosure of the complete codebase.
 
-**TABLE**  HYPER-PARAMETERS OF FFSTT
+The hyper-parameter settings for FFSTT are as follows:
 
 | Parameters Description                            | Value                             |
 | :------------------------------------------------ | --------------------------------- |
@@ -11,7 +11,7 @@ Codes for the Transferable NILM will be prioritized for public release, followed
 | Number of epochs                                  | 100                               |
 | Dimension of embedding ($D$)                      | 64                                |
 | Dimension of feed-forward layer ($D_{\text{ff}}$) | 64                                |
-| Sequence length                                   | 699                               |
+| Sequence length                                   | 799 (W.M), 699 (FG)               |
 | Number of attention heads                         | 8                                 |
 | Random Seed                                       | 2000                              |
 | Loss function                                     | $\mathcal{L}_2\text{Loss}(\cdot)$ |
@@ -19,26 +19,6 @@ Codes for the Transferable NILM will be prioritized for public release, followed
 | Gaussian noise                                    | $\mu =0,\sigma =0.1$              |
 | Optimizer                                         | Adam                              |
 | Initialization function                           | Standard                          |
-
-## Data Preparation
-
-Two real-world datasets, U.K.-DALE (**U**) and REDD (**R**) are used to evaluate the performance and transferability of our proposed model.
-
-The *U.K.-DALE* dataset contains power consumption measurements from diverse appliances in UK households, recording low-frequency sampling data at 6s and high-frequency sampling data at 16kHz.
-
-The *REDD* dataset includes measurements from six houses with multiple submeters, covering appliances like refrigerators and air conditioners. The sampling rate varies from 1 kHz to 15 kHz.
-
-For the U.K.-DALE (5s sampling rate), House1 (U1: 2013/01/06-2013/31/07) and House2 (U2: 2013/01/06-2013/31/07) during a two-month period (2013/01/06-2013/31/07) are selected, focusing on five typical household appliances for NILM: kettle (KT), washing machine (W.M), dishwasher (D.W), microwave (MV), and fridge (FG). For the REDD (5s sampling rate), all the data for House1 (R1) and House3 (R3) are used. However, due to the absence of KT data in the REDD dataset, NILM is performed using the other four appliances. For both datasets, 80% of the monitoring data allocated to the training set and 20% to the testing set.
-
-## Transferability Analysis
-
-In this paper, three cases are designed and compared for both intra- and interdomain adaptations. The proposed model is superior to other methods, especially for the appliances with a relatively complicated active profile, such as the W.M with multiple functions, which is very difficult to be monitored. 
-
-Specifically, 1) *Case 1: Intradomain transfer.* The U.K.-DALE with its extensive record duration and the REDD with its high resolution are selected for this case study. All methods are evaluated through two intradomain tasks: $U_i$ → $U_j$ and $R_i$ → $R_j$. In these tasks, $i$ and $j$ respectively denote the IDs of the source house, which possesses 100% labeled data for training, and the target house, which contains 25% labeled data for fine-tuning. Specifically, for the U.K.-DALE, we set $i = 2$ as the source domain and $j = 1$ as the target domain. Similarly, for the REDD, we set $i = 2$ and $j = 6$ for the intradomain adaptation evaluation. Table I reveals that the pre-trained FFSTT outperforms non-pretrained FFSTT and other benchmarks for most appliances, particularly those with more complex operating states like W.M. In the U.K.-DALE, when compared to training with only 25% labeled data, both W.M and D.W exhibit a noteworthy improvement in MAE of 50.48% and 32.53% respectively. These results underscore the effectiveness and superiority of the proposed method, even in the presence of substantial distribution differences between the source and target domains ($U_2$ → $U_1$). The findings from Fig. 5 consistently demonstrate the optimal performance of the proposed method, irrespective of whether the label distribution gap is large (W.M) or small (FG) between the source and target domains. The success can be attributed to the parameter fusion enabled by low-rank fine-tuning, which facilitates the adaptation of FFSTT to diverse data distributions across multiple dimensions. Additionally, it is worth noting that the performance of models closely aligns with the activity profiles of the appliances, beyond just the label distribution. Hence, while the proposed model remains the most suitable for stable and low power consumption MV, the extent of performance improvement is limited.
-
-2)*Case 2: Interdomain transfer.* To analyze adaptability in interdomain transfer, we adopt the notation $i$ and $j/y$ to represent the IDs of the source house (with 100% labeled data) and the target house (with 25% labeled data), respectively. Specifically, our evaluation encompasses four interdomain tasks: $U_i$ → $R_j$, $U_i$ → $R_y$, $R_i$ → $U_j$, and $R_i$ → $U_y$, to comprehensively assess all methods. When U.K.-DALE serves as the source domain, we set $i=2$, and $j=1/3$. Similarly, when REDD serves as the source domain, we assign $i=1$, with $j$ being either $1$ or $2$. As illustrated in Table I, the proposed model not only demonstrates superior performance on most appliances but also significantly exhibits improvement compared to the non-pretrained approach across all appliances. Utilizing t-SNE, we visualize the feature space of $U_2$ → $R_1$ W.M (Fig. 5), which uncovers significant distribution differences in the feature spaces of W.M and FG between the UK house $U_2$ and the US house $R_1$. Low-rank fine-tuning aids modules like FF in learning interdomain correlations and shared knowledge in the time domain, better understanding the structure and intrinsic patterns of the data. Consequently, this enables the model to accurately analyze the differences between the source and target domains, effectively compensating for the performance degradation caused by interdomain transfer.
-
-## Usage
 
 ### Requirements
 
@@ -49,45 +29,43 @@ Please code as below to install some necessary libraries.
 ```
 pip install -r requirements.txt
 ```
+## Data Preparation
 
-### Run Our Model
-To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. Then, execute the following code.
+Two real-world datasets, U.K.-DALE (**U**) and REDD (**R**) are used to evaluate the performance in full-label learning and domain adaptation of our proposed model.
+
+The U.K.-DALE dataset contains power consumption measurements from diverse appliances in UK households, recording at a sample rate of 16 kHz for the whole-house and at 1/6 Hz for individual appliances. The dataset was recorded from five houses, one of which was recorded for 1629 days, which is the longest known duration of any energy dataset conducted at this sampling rate. The time span of the U.K.-DALE was between 40 and 1629 days for different buildings.
+
+The REDD dataset includes the whole home electricity signal recorded at a high frequency (15kHz), individual circuits in the home labeled with its electrical category recorded at 0.5Hz, and plug-level monitors in the home recorded at 1Hz. This dataset has been monitored for 10 households, with a total of 119 days of data, representing the largest publicly available dataset. The time span of the REDD was between 3 and 19 days for different buildings. In order to achieve matching, the sampling rate of household appliance level data in this article is unified at 1/5Hz.
+
+To ensure consistency in the experiments with full-label and domain adaptation, for the U.K.-DALE, we select Houses 1 (U1: 2013/01/06-2013/31/07) and 2 (U2: 2013/01/06-2013/31/07), which have a moderate time span, and focus experiments on five typical appliances: kettle (KT), washing machine (W.M), dishwasher (D.W), microwave (MV), and fridge (FG). Given the absence of KT data in the REDD, we conduct experiments on the remaining four typical appliances in Houses 1 (R1) and 3 (R3) of the REDD. For both datasets, 80% of the monitoring data allocated to the training set and 20% to the testing set.
+
+## Transferability Analysis
+
+In this paper, three cases are designed and compared for both intra- and interdomain adaptations. The proposed model is superior to other methods, especially for the appliances with a relatively complicated active profile, such as the W.M with multiple functions, which is very difficult to be monitored. 
+
+1) *Case 1: Intradomain transfer.* The U.K.-DALE with its extensive record duration and the REDD with its high resolution are selected for this case study. All methods are evaluated through two intradomain tasks: $U_i$ → $U_j$ and $R_i$ → $R_j$. In these tasks, $i$ and $j$ respectively denote the IDs of the source house, which possesses 100% labeled data for training, and the target house, which contains 25% labeled data for fine-tuning. Specifically, for the U.K.-DALE, we set $i = 2$ as the source domain and $j = 1$ as the target domain. Similarly, for the REDD, we set $i = 2$ and $j = 6$ for the intradomain adaptation evaluation. These results underscore the effectiveness and superiority of the proposed method, even in the presence of substantial distribution differences between the source and target domains ($U_2$ → $U_1$). It is worth noting that the performance of models closely aligns with the activity profiles of the appliances, beyond just the label distribution. Hence, while the proposed model remains the most suitable for stable and low power consumption MV, the extent of performance improvement is limited.
+
+2) *Case 2: Interdomain transfer.* To analyze adaptability in interdomain transfer, we adopt the notation $i$ and $j/y$ to represent the IDs of the source house (with 100% labeled data) and the target house (with 25% labeled data), respectively. Specifically, our evaluation encompasses four interdomain tasks: $U_i$ → $R_j$, $U_i$ → $R_y$, $R_i$ → $U_j$, and $R_i$ → $U_y$, to comprehensively assess all methods. When U.K.-DALE serves as the source domain, we set $i=2$, and $j=1/3$. Similarly, when REDD serves as the source domain, we assign $i=1$, with $j$ being either $1$ or $2$. As illustrated in Table I, the proposed model not only demonstrates superior performance on most appliances but also significantly exhibits improvement compared to the non-pretrained approach across all appliances.
+## Usage
+
+### Getting started
+To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. If you only have a single GPU, you can directly execute the following code:
+
+```
+python main.py
+```
+
+If you are using multiple GPU servers, you can set the GPU index by executing the following code:
 
 ```
 bash NILM_uk.sh
 ```
 
-- **File Directory**
+**File Directory**
 
-  Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py`, `\nilmtk\disaggregate`, `\tutorial\experiment_example.ipynb` and  `\tutorial\code_example.ipynb`
-  
-  The whole file directory is as follow (We omit some unimportant details)：
-  
-  ```
-  ├── README.md							                   
-  ├── nilm_metadata          				
-  │   └── *								//Some details are omitted
-  ├── nilmtk                     
-  │   ├── api.py							//The core api to carry out NILM experiment
-  │   ├── loss.py							//The evaluation Metrics
-  │   ├── diaggregate
-  |   |	├── __init__.py
-  |   |	├── attention_pytorch.py		   //Seq2Seq with Attention
-  |   |	├── bilstm_pytorch.py			   //BiLSTM
-  |   |	├── dae_pytorch.py				   //Denoising AutoEncoder
-  |   |	├── disaggregator.py			   //Base Class
-  |   |	├── energan_pytorch.py			   //EnerGAN
-  |   |	├── seq2point_pytorch.py		   //Seq2Point
-  |   |   ├── attention_cnn_pytorch.py       //CNN_Attention
-  |   |   ├── seq2seqcnn_pytorch.py          //CNN_Seq2Seq
-  |   |   ├── bilstm_pytorch_multidim.py     //Multiple input features BiLSTM
-  |   |   ├── dae_pytorch_multidim.py        //Multiple input features DAE
-  |   |   ├── seq2point_pytorch_multidim.py  //Multiple input features Seq2Point
-  |   |	└── sgn_pytorch.py				   //SGN
-  │   └── *								   //Some details are omitted
-  ```
+Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py` and `\nilmtk\disaggregate`
 
-- **References**
+**References**
 
   [1] https://github.com/nilmtk/nilmtk.
 
