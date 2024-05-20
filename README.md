@@ -32,13 +32,13 @@ pip install -r requirements.txt
 
 ## Data Preparation
 
-Two real-world datasets, U.K.-DALE (**U**) and REDD (**R**) are used to evaluate the performance and transferability of our proposed model.
+Two real-world datasets, U.K.-DALE (**U**) and REDD (**R**) are used to evaluate the performance in full-label learning and domain adaptation of our proposed model.
 
-The *U.K.-DALE* dataset contains power consumption measurements from diverse appliances in UK households, recording low-frequency sampling data at 6s and high-frequency sampling data at 16kHz.
+The U.K.-DALE dataset contains power consumption measurements from diverse appliances in UK households, recording at a sample rate of 16 kHz for the whole-house and at 1/6 Hz for individual appliances. The dataset was recorded from five houses, one of which was recorded for 1629 days, which is the longest known duration of any energy dataset conducted at this sampling rate. The time span of the U.K.-DALE was between 40 and 1629 days for different buildings.
 
-The *REDD* dataset includes measurements from six houses with multiple submeters, covering appliances like refrigerators and air conditioners. The sampling rate varies from 1 kHz to 15 kHz.
+The REDD dataset includes the whole home electricity signal recorded at a high frequency (15kHz), individual circuits in the home labeled with its electrical category recorded at 0.5Hz, and plug-level monitors in the home recorded at 1Hz. This dataset has been monitored for 10 households, with a total of 119 days of data, representing the largest publicly available dataset. The time span of the REDD was between 3 and 19 days for different buildings. In order to achieve matching, the sampling rate of household appliance level data in this article is unified at 1/5Hz.
 
-For the U.K.-DALE (5s sampling rate), House1 (U1: 2013/01/06-2013/31/07) and House2 (U2: 2013/01/06-2013/31/07) during a two-month period (2013/01/06-2013/31/07) are selected, focusing on five typical household appliances for NILM: kettle (KT), washing machine (W.M), dishwasher (D.W), microwave (MV), and fridge (FG). For the REDD (5s sampling rate), all the data for House1 (R1) and House3 (R3) are used. However, due to the absence of KT data in the REDD dataset, NILM is performed using the other four appliances. For both datasets, 80% of the monitoring data allocated to the training set and 20% to the testing set.
+To ensure consistency in the experiments with full-label and domain adaptation, for the U.K.-DALE, we select Houses 1 (U1: 2013/01/06-2013/31/07) and 2 (U2: 2013/01/06-2013/31/07), which have a moderate time span, and focus experiments on five typical appliances: kettle (KT), washing machine (W.M), dishwasher (D.W), microwave (MV), and fridge (FG). Given the absence of KT data in the REDD, we conduct experiments on the remaining four typical appliances in Houses 1 (R1) and 3 (R3) of the REDD. For both datasets, 80% of the monitoring data allocated to the training set and 20% to the testing set.
 
 ### Getting started
 To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. If you only have a single GPU, you can directly execute the following code:
