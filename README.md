@@ -57,6 +57,8 @@ bash NILM_uk.sh
 
 Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py` and `\nilmtk\disaggregate`.
 
+The detailed code for both FFSTT and benchmarks can be found in `\nilmtk\disaggregate`.
+
 ## Domain Adaptation Analysis
 
 In this paper, three cases are designed and compared for both intra- and interdomain adaptations. The proposed model is superior to other methods, especially for the appliances with a relatively complicated active profile, such as the W.M with multiple functions, which is very difficult to be monitored. 
