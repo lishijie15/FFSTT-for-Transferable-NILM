@@ -119,93 +119,6 @@ class SVT_channel_token_mixing(nn.Module):
         x = x.reshape(B, N, C)  # permute is not same as reshape or view
         return x
 
-# class SVT_channel_token_mixing_de(nn.Module):
-#     def __init__(self, dim):
-#         super().__init__()
-#
-#         self.conv = nn.Conv2d(dim // 2, dim // 2, kernel_size=3, padding=1, groups=dim // 2, bias=True)
-#
-#         self.hidden_size = dim // 2
-#         self.num_blocks = 4
-#         self.block_size = self.hidden_size // self.num_blocks
-#         assert self.hidden_size % self.num_blocks == 0
-#         self.token_blocks = 4  # 原始是28
-#
-#         self.complex_weight_ll_de = nn.Parameter(torch.randn(dim // 2, 16, 8, dtype=torch.float32) * 0.02)
-#         self.complex_weight_lh_1 = nn.Parameter(torch.randn(2, self.num_blocks, self.block_size, self.block_size, dtype=torch.float32) * 0.02)
-#         self.complex_weight_lh_2 = nn.Parameter(torch.randn(2, self.num_blocks, self.block_size, self.block_size, dtype=torch.float32) * 0.02)
-#         self.complex_weight_lh_b1 = nn.Parameter(torch.randn(2, self.num_blocks, self.block_size, dtype=torch.float32) * 0.02)
-#         self.complex_weight_lh_b2 = nn.Parameter(torch.randn(2, self.num_blocks, self.block_size, dtype=torch.float32) * 0.02)
-#
-#         self.complex_weight_lh_1_t = nn.Parameter(torch.randn(2, self.token_blocks, self.token_blocks, self.token_blocks, dtype=torch.float32) * 0.02)
-#         self.complex_weight_lh_2_t = nn.Parameter(torch.randn(2, self.token_blocks, self.token_blocks, self.token_blocks, dtype=torch.float32) * 0.02)
-#         self.complex_weight_lh_b1_t = nn.Parameter(torch.randn(2, self.token_blocks, self.token_blocks, dtype=torch.float32) * 0.02)
-#         self.complex_weight_lh_b2_t = nn.Parameter(torch.randn(2, self.token_blocks, self.token_blocks, dtype=torch.float32) * 0.02)
-#
-#         self.xfm = DTCWTForward(J=1, biort='near_sym_b', qshift='qshift_b')
-#         self.ifm = DTCWTInverse(biort='near_sym_b', qshift='qshift_b')
-#         self.softshrink = 0.0  # args.fno_softshrink
-#
-#     def multiply(self, input, weights):
-#         return torch.einsum('...bd,bdk->...bk', input, weights)
-#
-#     def forward(self, x, H, W):
-#         B, N, C = x.shape
-#         x = x.view(B, H, W, C)
-#         x = torch.permute(x, (0, 3, 1, 2)).contiguous()  # (B, H, W, C) -> (B, C, H, W)
-#         B, C, H, W = x.shape  # this shape is required for dwt
-#
-#         x1, x2 = torch.chunk(x, 2, dim=1)
-#         # x1 = self.conv(x1)
-#
-#         x2 = x2.to(torch.float32)
-#         B, C1, a, b = x2.shape
-#
-#         xl, xh = self.xfm(x2)
-#         xl = xl * self.complex_weight_ll_de
-#
-#         xh[0] = torch.permute(xh[0], (5, 0, 2, 3, 4, 1)).contiguous()  #(B,C,k,H,W,2)
-#         xh[0] = xh[0].reshape(xh[0].shape[0], xh[0].shape[1], xh[0].shape[2], xh[0].shape[3], xh[0].shape[4],
-#                               self.num_blocks, self.block_size)  #block是为了进行通道混合，所以对通道数32进行了拆分，变成了4和8
-#
-#         ###########################################################################################
-#         # This is for Channel mixing:
-#         x_real = xh[0][0]
-#         x_imag = xh[0][1]
-#
-#         # print(x_real.shape, x_imag.shape, self.complex_weight_lh_1[0].shape, self.complex_weight_lh_1[1].shape, self.complex_weight_lh_2[0].shape, self.complex_weight_lh_2[1].shape)
-#
-#         x_real_1 = F.relu(self.multiply(x_real, self.complex_weight_lh_1[0]) - self.multiply(x_imag, self.complex_weight_lh_1[1]) + self.complex_weight_lh_b1[0])
-#         x_imag_1 = F.relu(self.multiply(x_real, self.complex_weight_lh_1[1]) + self.multiply(x_imag, self.complex_weight_lh_1[0]) + self.complex_weight_lh_b1[1])
-#         x_real_2 = self.multiply(x_real_1, self.complex_weight_lh_2[0]) - self.multiply(x_imag_1, self.complex_weight_lh_2[1]) + self.complex_weight_lh_b2[0]
-#         x_imag_2 = self.multiply(x_real_1, self.complex_weight_lh_2[1]) + self.multiply(x_imag_1, self.complex_weight_lh_2[0]) + self.complex_weight_lh_b2[1]
-#
-#         xh[0] = torch.stack([x_real_2, x_imag_2], dim=-1).float()
-#         xh[0] = F.softshrink(xh[0], lambd=self.softshrink) if self.softshrink else xh[0]
-#         xh[0] = xh[0].reshape(B, xh[0].shape[1], xh[0].shape[2], xh[0].shape[3], self.hidden_size, xh[0].shape[6])
-#
-#         ###########################################################################################
-#         # This is for Token mixing:
-#         xh[0] = torch.permute(xh[0], (5, 0, 4, 1, 2, 3)).contiguous()  # 2, B, 64, 6,28,28
-#         x_real_t = xh[0][0]
-#         x_imag_t = xh[0][1]
-#
-#         x_real_1_t = F.relu(self.multiply(x_real_t, self.complex_weight_lh_1_t[0]) - self.multiply(x_imag_t, self.complex_weight_lh_1_t[1]) + self.complex_weight_lh_b1_t[0])
-#         x_imag_1_t = F.relu(self.multiply(x_real_t, self.complex_weight_lh_1_t[1]) + self.multiply(x_imag_t, self.complex_weight_lh_1_t[0]) + self.complex_weight_lh_b1_t[1])
-#         x_real_2_t = self.multiply(x_real_1_t, self.complex_weight_lh_2_t[0]) - self.multiply(x_imag_1_t, self.complex_weight_lh_2_t[1]) + self.complex_weight_lh_b2_t[0]
-#         x_imag_2_t = self.multiply(x_real_1_t, self.complex_weight_lh_2_t[1]) + self.multiply(x_imag_1_t, self.complex_weight_lh_2_t[0]) + self.complex_weight_lh_b2_t[1]
-#
-#         # print(x_real_t.shape, x_imag_t.shape, self.complex_weight_lh_1_t[0].shape, self.complex_weight_lh_1_t[1].shape, self.complex_weight_lh_2_t[0].shape, self.complex_weight_lh_2_t[1].shape)
-#
-#         xh[0] = torch.stack([x_real_2_t, x_imag_2_t], dim=-1).float()  # B, 64, 6,24,28, 2
-#
-#         x2 = self.ifm((xl, xh))
-#
-#         x = torch.cat([x1.unsqueeze(2), x2.unsqueeze(2)], dim=2).reshape(B, 2 * C1, a, b)
-#         x = torch.permute(x, (0, 2, 3, 1)).contiguous()  # (N, C, H, W) -> (N, H, W, C)
-#         x = x.reshape(B, N, C)  # permute is not same as reshape or view
-#         return x
-
 class DWConv(nn.Module):
     def __init__(self, dim=768):
         super(DWConv, self).__init__()
@@ -262,7 +175,6 @@ class Block(nn.Module):
         self.norm2 = norm_layer(dim)
 
         self.attn = SVT_channel_token_mixing (dim, d_modelup)
-        # self.attn_de = SVT_channel_token_mixing_de (dim)
         self.mlp = PVT2FFN(in_features=dim, hidden_features=int(dim * mlp_ratio))
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
         self.apply(self._init_weights)
@@ -299,7 +211,7 @@ class Block(nn.Module):
 
 def make_dmodel(seq_len):
     remainder = seq_len // 8
-    if remainder % 2 != 0:  # 如果余数不是偶数
+    if remainder % 2 != 0:  
         remainder = remainder + 1
         seq_len = remainder * 8
     elif remainder * 8 < seq_len:
