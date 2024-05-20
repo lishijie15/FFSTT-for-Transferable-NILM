@@ -38,7 +38,7 @@ The U.K.-DALE dataset contains power consumption measurements from diverse appli
 
 The REDD dataset includes the whole home electricity signal recorded at a high frequency (15kHz), individual circuits in the home labeled with its electrical category recorded at 0.5Hz, and plug-level monitors in the home recorded at 1Hz. This dataset has been monitored for 10 households, with a total of 119 days of data, representing the largest publicly available dataset. The time span of the REDD was between 3 and 19 days for different buildings. In order to achieve matching, the sampling rate of household appliance level data in this article is unified at 1/5Hz.
 
-To ensure consistency in the experiments with full-label and domain adaptation, for the U.K.-DALE, we select Houses 1 ($U_1$: 2013/01/06-2013/31/07) and 2 ($U_2$: 2013/01/06-2013/31/07), which have a moderate time span, and focus experiments on five typical appliances: kettle (KT), washing machine (W.M), dishwasher (D.W), microwave (MV), and fridge (FG). Given the absence of KT data in the REDD, we conduct experiments on the remaining four typical appliances in Houses 1 ($R_1$) and 3 ($R_3$) of the REDD. For both datasets, 80% of the monitoring data allocated to the training set and 20% to the testing set.
+To ensure consistency in the experiments with full-label and domain adaptation, for the U.K.-DALE, we select Houses 1 ($U_1$: 2013/01/06-2013/31/07) and 2 ($U_2$: 2013/01/06-2013/31/07), which have a moderate time span, and focus experiments on five typical appliances: kettle (KT), washing machine (W.M), dishwasher (D.W), microwave (MV), and fridge (FG). Given the absence of KT data in the REDD, we conduct experiments on the remaining four typical appliances in Houses 1 ($R_1$: 2011/18/04-201104/05) and 3 ($R_3$: 2011/18/04-201104/05) of the REDD. For both datasets, 80% of the monitoring data allocated to the training set and 20% to the testing set.
 
 ### Getting started
 To perform the FFSTT, first download the [UK-DALE](https://jack-kelly.com/data/) and [REDD](http://redd.csail.mit.edu/) datasets and place them in the root directory folder `./data/`. If you only have a single GPU, you can directly execute the following code:
@@ -55,10 +55,10 @@ bash NILM_uk.sh
 
 The detailed code for both FFSTT and benchmarks can be found in `\nilmtk\disaggregate`.
 
-Due to the excessive size of the pre-trained models for S2P and BiLSTM, which prevents their upload, we only provide the other three pre-trained models. The pre-trained models for S2P and BiLSTM can be obtained through training from scratch on the REDD dataset.
-
 Since the original nilmtk toolkit may seem to be redundant for testing Neural NILM algorithms (Deep Learning method), we sorely use it  for the generation of power data within a specific period of time. Thus you can **only focus on  these files or folders**: `\nilmtk\api.py`, `\nilmtk\loss.py` and `\nilmtk\disaggregate`.
 ## Domain Adaptation Setting
+
+Due to the excessive size of the pre-trained models for S2P and BiLSTM, which prevents their upload, we only provide the other three pre-trained models. The pre-trained models for S2P and BiLSTM can be obtained through training from scratch on the REDD dataset.
 
 In this paper, three cases are designed and compared for both intra- and interdomain adaptations. The proposed model is superior to other methods, especially for the appliances with a relatively complicated active profile, such as the W.M with multiple functions, which is very difficult to be monitored. 
 
