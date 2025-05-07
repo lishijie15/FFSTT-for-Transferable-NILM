@@ -16,6 +16,7 @@ The hyper-parameter settings for FFSTT are as follows:
 | Random Seed                                       | 2000                              |
 | Loss function                                     | $\mathcal{L}_2\text{Loss}(\cdot)$ |
 | Dropout probability                               | 0.1                               |
+| Prediction sliding step ($s_c$) | 1 |
 | Gaussian noise                                    | $\mu =0,\sigma =0.1$              |
 | Optimizer                                         | Adam                              |
 | Initialization function                           | Standard                          |
