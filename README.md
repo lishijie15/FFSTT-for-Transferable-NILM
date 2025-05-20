@@ -1,6 +1,5 @@
 # FFSTT for Transferable NILM
 Neural NILM is used as a platform for comparing multiple disaggregation approaches. The setting of the $D$, $D_{\text{ff}}$ and the number of attention heads takes into account the computational performance of the GPU, as well as the complexity of the datasets and its optimal feature representation. The learning rate of the Adam optimizer and batch size are initially set to empirical values, followed by multiple result-driven simulations to obtain the optimal values.
-Codes for the Transferable NILM will be prioritized for public release, followed by a gradual disclosure of the complete codebase.
 
 The hyper-parameter settings for FFSTT are as follows:
 
