@@ -73,3 +73,15 @@ In this paper, three cases are designed and compared for both intra- and interdo
   [2] KELLY J, KNOTTENBELT W. Neural NILM: Deep neural networks applied to energy disaggregation. In Proceedings of the 2nd ACM International Conference on Embedded Systems for Energy-Efficient Built Environments. November 4-5, 2015, New York, NY, USA, 55–64.
 
   [3] https://github.com/Ming-er/NeuralNILM_Pytorch.
+
+```bash
+@ARTICLE{FFSTTShijie2025,
+  author={Li, Shijie and Su, Zijun and Chen, Guanlin and Chen, Lulu and Li, Haoqin and Jiang, Huaiguang and Zhang, Jun and Gao, David Wenzhong},
+  journal={IEEE Transactions on Industrial Informatics}, 
+  title={Transferable Nonintrusive Load Monitoring in Smart Grids via Frequency-division Fusion Scattering Time-series Transformer}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-11},
+}
+```
