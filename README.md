@@ -74,8 +74,11 @@ In this paper, three cases are designed and compared for both intra- and interdo
 
   [3] https://github.com/Ming-er/NeuralNILM_Pytorch.
 
+## BibTeX
+If you find our work useful in your research. Please consider giving a star ⭐ and citation 📚.
+
 ```bash
-@ARTICLE{FFSTTShijie2025,
+@ARTICLE{FFSTT2025Shijie,
   author={Li, Shijie and Su, Zijun and Chen, Guanlin and Chen, Lulu and Li, Haoqin and Jiang, Huaiguang and Zhang, Jun and Gao, David Wenzhong},
   journal={IEEE Transactions on Industrial Informatics}, 
   title={Transferable Nonintrusive Load Monitoring in Smart Grids via Frequency-division Fusion Scattering Time-series Transformer}, 
