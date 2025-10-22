@@ -83,8 +83,9 @@ If you find our work useful in your research. Please consider giving a star ⭐ 
   journal={IEEE Transactions on Industrial Informatics}, 
   title={Transferable Nonintrusive Load Monitoring in Smart Grids via Frequency-division Fusion Scattering Time-series Transformer}, 
   year={2025},
-  volume={},
-  number={},
-  pages={1-11},
+  volume={21},
+  number={10},
+  pages={7531-7541},
+  doi={10.1109/TII.2025.3576846}
 }
 ```
